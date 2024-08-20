@@ -1,5 +1,6 @@
 package com.mycompany.projeto;
 import java.awt.event.KeyEvent;
+import java.util.regex.Pattern;
 
 public class Calculadora extends javax.swing.JFrame {
     
@@ -7,7 +8,8 @@ public class Calculadora extends javax.swing.JFrame {
     private double acumulado1;
     private int operacao;
     private String apagaValor = "";
-
+       
+    
     public Calculadora() {
         initComponents();
     }
@@ -319,71 +321,59 @@ public class Calculadora extends javax.swing.JFrame {
                     acumulado = valor;
                     txtValor.setText("0");
                 }
-                else if(acumulado !=0){
-                    acumulado1=valor;
-                    acumulado += acumulado1;
-                    if (acumulado % 2 == 0){
-                        int valorInt = (int) acumulado;
-                        String valorString = String.valueOf(valorInt);
-                        // Limpa o campo de texto para o próximo valor
+                else{
+                    acumulado += valor;
+                    String valorString = String.valueOf(acumulado);
+                    if (valorString.endsWith(".0")) {
+                        valorString = valorString.replace(".0", "");
                         txtValor.setText(valorString);
                         apagaValor = valorString;
                     }
                     else{
-                        String valorString = String.valueOf(acumulado);
-                        // Limpa o campo de texto para o próximo valor
                         txtValor.setText(valorString);
                         apagaValor = valorString;
-                    }
-                        acumulado = 0;
-                        acumulado1 = 0;
-                        operacao = 0;
-                        break;
-                }              
-            case 2: // Subtração
-                if (acumulado == 0) {
-                    acumulado = valor;
-                    txtValor.setText("0");
-                } else {
-                    acumulado1 = valor;
-                    acumulado -= acumulado1;
-                    if (acumulado % 2 == 0){
-                        int valorInt = (int) acumulado;
-                        String valorString = String.valueOf(valorInt);
-                        // Limpa o campo de texto para o próximo valor
-                        txtValor.setText(valorString);
-                        apagaValor = valorString;
-                    }
-                    else{
-                        String valorString = String.valueOf(acumulado);
-                        // Limpa o campo de texto para o próximo valor
-                        txtValor.setText(valorString);
-                        apagaValor = valorString;
-                    }
-                }
-                // Reseta acumulado e acumulado1 após a operação
+                    } 
+                }   
                 acumulado = 0;
                 acumulado1 = 0;
                 operacao = 0;
                 break;
-
-            case 3: // Multiplicação
-                if (acumulado == 0) {
+            case 2: // Subtração
+                if (acumulado == 0){
                     acumulado = valor;
                     txtValor.setText("0");
-                } else {
-                    acumulado1 = valor;
-                    acumulado *= acumulado1;
-                    if (acumulado % 2 == 0){
-                        int valorInt = (int) acumulado;
-                        String valorString = String.valueOf(valorInt);
-                        // Limpa o campo de texto para o próximo valor
+                }
+                else{
+                    acumulado -= valor;
+                    String valorString = String.valueOf(acumulado);
+                    if (valorString.endsWith(".0")) {
+                        valorString = valorString.replace(".0", "");
                         txtValor.setText(valorString);
                         apagaValor = valorString;
                     }
                     else{
-                        String valorString = String.valueOf(acumulado);
-                        // Limpa o campo de texto para o próximo valor
+                        txtValor.setText(valorString);
+                        apagaValor = valorString;
+                    }
+                }
+                acumulado = 0;
+                acumulado1 = 0;
+                operacao = 0;
+                break;
+            case 3: // Multiplicação
+                if (acumulado == 0){
+                    acumulado = valor;
+                    txtValor.setText("0");
+                }
+                else{
+                    acumulado *= valor;
+                    String valorString = String.valueOf(acumulado);
+                    if (valorString.endsWith(".0")) {
+                        valorString = valorString.replace(".0", "");
+                        txtValor.setText(valorString);
+                        apagaValor = valorString;
+                    }
+                    else{
                         txtValor.setText(valorString);
                         apagaValor = valorString;
                     }
@@ -394,28 +384,23 @@ public class Calculadora extends javax.swing.JFrame {
                 break;
 
             case 4: // Divisão
-                if (acumulado == 0) {
+                // Soma o valor ao acumulado
+                if (acumulado == 0){
                     acumulado = valor;
                     txtValor.setText("0");
-                } else {
-                    acumulado1 = valor;
-                    // Verifica se o denominador é diferente de zero para evitar divisão por zero
-                    if (acumulado1 != 0) {
-                        acumulado /= acumulado1;
-                        if (acumulado % 2 == 0){
-                            int valorInt = (int) acumulado;
-                            String valorString = String.valueOf(valorInt);
-                            // Limpa o campo de texto para o próximo valor
-                            txtValor.setText(valorString);
-                            apagaValor = valorString;
-                        }
-                        else{
-                            String valorString = String.valueOf(acumulado);
-                            // Limpa o campo de texto para o próximo valor
-                            txtValor.setText(valorString);
-                            apagaValor = valorString;
-                        }
+                }
+                else{
+                    acumulado /= valor;
+                    String valorString = String.valueOf(acumulado);
+                    if (valorString.endsWith(".0")) {
+                        valorString = valorString.replace(".0", "");
+                        txtValor.setText(valorString);
+                        apagaValor = valorString;
                     }
+                    else{
+                        txtValor.setText(valorString);
+                        apagaValor = valorString;
+                    } 
                 }
                 acumulado = 0;
                 acumulado1 = 0;
@@ -435,32 +420,24 @@ public class Calculadora extends javax.swing.JFrame {
                 txtValor.setText("0");
                 break;
             case 7:       
-                // Soma o valor ao acumulado
                 if (acumulado == 0){
                     acumulado = valor;
                     txtValor.setText("0");
                 }
-                else if(acumulado !=0){
+                else{
                     acumulado1=valor;
                     acumulado = (acumulado*acumulado1)/100;
-                    if (acumulado % 2 == 0){
-                        int valorInt = (int) acumulado;
-                        String valorString = String.valueOf(valorInt);
-                        // Limpa o campo de texto para o próximo valor
+                    String valorString = String.valueOf(acumulado);
+                    if (valorString.endsWith(".0")) {
+                        valorString = valorString.replace(".0", "");
                         txtValor.setText(valorString);
                         apagaValor = valorString;
                     }
                     else{
-                        String valorString = String.valueOf(acumulado);
-                        // Limpa o campo de texto para o próximo valor
                         txtValor.setText(valorString);
                         apagaValor = valorString;
                     }
-                acumulado = 0;
-                acumulado1 = 0;
-                operacao = 0;
-                break;
-                }
+                }   
         }
     }//GEN-LAST:event_btnIgualActionPerformed
 
@@ -567,30 +544,26 @@ public class Calculadora extends javax.swing.JFrame {
 
     private void btnMultiplicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMultiplicaActionPerformed
         String texto = txtValor.getText();
+        
+        operacao = 3;
 
         // Converte o texto para double
         double valor = Double.parseDouble(texto);
-        
-        operacao += 3;
-
+      
         // Soma o valor ao acumulado
         if (acumulado == 0){
             acumulado = valor;
             txtValor.setText("0");
         }
-        else if(acumulado !=0){
-            acumulado1=valor;
-            acumulado *= acumulado1;
-            if (acumulado % 2 == 0){
-                int valorInt = (int) acumulado;
-                String valorString = String.valueOf(valorInt);
-                // Limpa o campo de texto para o próximo valor
+        else{
+            acumulado *= valor;
+            String valorString = String.valueOf(acumulado);
+            if (valorString.endsWith(".0")) {
+                valorString = valorString.replace(".0", "");
                 txtValor.setText(valorString);
                 apagaValor = valorString;
             }
             else{
-                String valorString = String.valueOf(acumulado);
-                // Limpa o campo de texto para o próximo valor
                 txtValor.setText(valorString);
                 apagaValor = valorString;
             }
@@ -599,62 +572,52 @@ public class Calculadora extends javax.swing.JFrame {
 
     private void btnDivisaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDivisaoActionPerformed
         String texto = txtValor.getText();
+        
+        operacao = 4;
 
         // Converte o texto para double
         double valor = Double.parseDouble(texto);
         
-        operacao += 4;
-
         // Soma o valor ao acumulado
         if (acumulado == 0){
             acumulado = valor;
             txtValor.setText("0");
         }
-        else if(acumulado !=0){
-            acumulado1=valor;
-            acumulado /= acumulado1;
-            if (acumulado % 2 == 0){
-                int valorInt = (int) acumulado;
-                String valorString = String.valueOf(valorInt);
-                // Limpa o campo de texto para o próximo valor
+        else{
+            acumulado /= valor;
+            String valorString = String.valueOf(acumulado);
+            if (valorString.endsWith(".0")) {
+                valorString = valorString.replace(".0", "");
                 txtValor.setText(valorString);
                 apagaValor = valorString;
             }
             else{
-                String valorString = String.valueOf(acumulado);
-                // Limpa o campo de texto para o próximo valor
                 txtValor.setText(valorString);
                 apagaValor = valorString;
-            }
+            } 
         }
     }//GEN-LAST:event_btnDivisaoActionPerformed
 
     private void btnSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubActionPerformed
         String texto = txtValor.getText();
-
-        // Converte o texto para double
+        
+        operacao = 2;
+        
         double valor = Double.parseDouble(texto);
         
-        operacao += 2;
-
-        // Soma o valor ao acumulado
         if (acumulado == 0){
             acumulado = valor;
             txtValor.setText("0");
         }
-        else if(acumulado !=0){
-            acumulado1=valor;
-            acumulado -= acumulado1;
-            if (acumulado % 2 == 0){
-                int valorInt = (int) acumulado;
-                String valorString = String.valueOf(valorInt);
-                // Limpa o campo de texto para o próximo valor
+        else{
+            acumulado -= valor;
+            String valorString = String.valueOf(acumulado);
+            if (valorString.endsWith(".0")) {
+                valorString = valorString.replace(".0", "");
                 txtValor.setText(valorString);
                 apagaValor = valorString;
             }
             else{
-                String valorString = String.valueOf(acumulado);
-                // Limpa o campo de texto para o próximo valor
                 txtValor.setText(valorString);
                 apagaValor = valorString;
             }
@@ -668,30 +631,25 @@ public class Calculadora extends javax.swing.JFrame {
         // Converte o texto para double
         double valor = Double.parseDouble(texto);
         
-        operacao += 1;
+        operacao = 1;
 
         // Soma o valor ao acumulado
         if (acumulado == 0){
             acumulado = valor;
             txtValor.setText("0");
         }
-        else if(acumulado !=0){
-            acumulado1=valor;
-            acumulado += acumulado1;
-            if (acumulado % 2 == 0){
-                int valorInt = (int) acumulado;
-                String valorString = String.valueOf(valorInt);
-                // Limpa o campo de texto para o próximo valor
+        else{
+            acumulado += valor;
+            String valorString = String.valueOf(acumulado);
+            if (valorString.endsWith(".0")) {
+                valorString = valorString.replace(".0", "");
                 txtValor.setText(valorString);
                 apagaValor = valorString;
             }
             else{
-                String valorString = String.valueOf(acumulado);
-                // Limpa o campo de texto para o próximo valor
                 txtValor.setText(valorString);
                 apagaValor = valorString;
-            }
-            
+            } 
         }
     }//GEN-LAST:event_btnSomaActionPerformed
 
@@ -704,21 +662,19 @@ public class Calculadora extends javax.swing.JFrame {
         
         acumulado = valor * valor;
         
-        operacao += 5;
+        operacao = 5;
         
-        if (acumulado % 2 == 0){
-            int valorInt = (int) acumulado;
-            String valorString = String.valueOf(valorInt);
-            // Limpa o campo de texto para o próximo valor
+        String valorString = String.valueOf(acumulado);
+        
+        if (valorString.endsWith(".0")) {
+            valorString = valorString.replace(".0", "");
             txtValor.setText(valorString);
             apagaValor = valorString;
         }
         else{
-            String valorString = String.valueOf(acumulado);
-            // Limpa o campo de texto para o próximo valor
             txtValor.setText(valorString);
             apagaValor = valorString;
-        }  
+        }
     }//GEN-LAST:event_btnPotenciaActionPerformed
 
     private void txtValorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtValorActionPerformed
@@ -732,7 +688,7 @@ public class Calculadora extends javax.swing.JFrame {
         // Converte o texto para double
         double valor = Double.parseDouble(texto);
         
-        operacao += 6;
+        operacao = 6;
         
         // Verifica se o número é não negativo
         if (valor < 0) {
@@ -741,16 +697,13 @@ public class Calculadora extends javax.swing.JFrame {
         else {
             // Calcula a raiz quadrada usando o método Math.sqrt()
             double acumulado = Math.sqrt(valor);
-            if (acumulado % 2 == 0){
-                int valorInt = (int) acumulado;
-                String valorString = String.valueOf(valorInt);
-                // Limpa o campo de texto para o próximo valor
+            String valorString = String.valueOf(acumulado);
+            if (valorString.endsWith(".0")) {
+                valorString = valorString.replace(".0", "");
                 txtValor.setText(valorString);
                 apagaValor = valorString;
             }
             else{
-                String valorString = String.valueOf(acumulado);
-                // Limpa o campo de texto para o próximo valor
                 txtValor.setText(valorString);
                 apagaValor = valorString;
             }
@@ -764,31 +717,29 @@ public class Calculadora extends javax.swing.JFrame {
         // Converte o texto para double
         double valor = Double.parseDouble(texto);
         
+        operacao = 7;
+        
         // Soma o valor ao acumulado
         if (acumulado == 0){
             acumulado = valor;
             txtValor.setText("0");
         }
-        else if(acumulado !=0){
+        else{
             acumulado1=valor;
             acumulado = (acumulado*acumulado1)/100;
-            if (acumulado % 2 == 0){
-                int valorInt = (int) acumulado;
-                String valorString = String.valueOf(valorInt);
-                // Limpa o campo de texto para o próximo valor
+            String valorString = String.valueOf(acumulado);
+            if (valorString.endsWith(".0")) {
+                valorString = valorString.replace(".0", "");
                 txtValor.setText(valorString);
                 apagaValor = valorString;
             }
             else{
-                String valorString = String.valueOf(acumulado);
-                // Limpa o campo de texto para o próximo valor
                 txtValor.setText(valorString);
                 apagaValor = valorString;
             }
         }
-        operacao += 7;
     }//GEN-LAST:event_btnPorcentagemActionPerformed
-
+    
     public static void main(String args[]) {
        
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -797,7 +748,7 @@ public class Calculadora extends javax.swing.JFrame {
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bntSeis;
     private javax.swing.JButton btnApagar;
@@ -824,4 +775,9 @@ public class Calculadora extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField txtValor;
     // End of variables declaration//GEN-END:variables
+
+    public static boolean containsDecimalPoint(String text) {
+           Pattern pattern = Pattern.compile("\\.");
+           return pattern.matcher(text).find();
+    }
 }
