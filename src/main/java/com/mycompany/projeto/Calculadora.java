@@ -1,6 +1,6 @@
 package com.mycompany.projeto;
 import java.awt.event.KeyEvent;
-import java.util.regex.Pattern;
+import java.text.DecimalFormat;
 
 public class Calculadora extends javax.swing.JFrame {
     
@@ -339,21 +339,24 @@ public class Calculadora extends javax.swing.JFrame {
                 operacao = 0;
                 break;
             case 2: // Subtração
+                DecimalFormat df = new DecimalFormat("#.###############");
+        
                 if (acumulado == 0){
                     acumulado = valor;
                     txtValor.setText("0");
                 }
                 else{
                     acumulado -= valor;
-                    String valorString = String.valueOf(acumulado);
-                    if (valorString.endsWith(".0")) {
+                    String valorString = df.format(acumulado);
+                    String valorString2 = valorString.replace(",", ".");
+                    if (valorString2.endsWith(".0")) {
                         valorString = valorString.replace(".0", "");
                         txtValor.setText(valorString);
                         apagaValor = valorString;
                     }
                     else{
-                        txtValor.setText(valorString);
-                        apagaValor = valorString;
+                        txtValor.setText(valorString2);
+                        apagaValor = valorString2;
                     }
                 }
                 acumulado = 0;
@@ -549,6 +552,8 @@ public class Calculadora extends javax.swing.JFrame {
 
         // Converte o texto para double
         double valor = Double.parseDouble(texto);
+        
+        DecimalFormat df = new DecimalFormat("#.###############");
       
         // Soma o valor ao acumulado
         if (acumulado == 0){
@@ -557,15 +562,16 @@ public class Calculadora extends javax.swing.JFrame {
         }
         else{
             acumulado *= valor;
-            String valorString = String.valueOf(acumulado);
-            if (valorString.endsWith(".0")) {
+            String valorString = df.format(acumulado);
+            String valorString2 = valorString.replace(",", ".");
+            if (valorString2.endsWith(".0")) {
                 valorString = valorString.replace(".0", "");
                 txtValor.setText(valorString);
                 apagaValor = valorString;
             }
             else{
-                txtValor.setText(valorString);
-                apagaValor = valorString;
+                txtValor.setText(valorString2);
+                apagaValor = valorString2;
             }
         }
     }//GEN-LAST:event_btnMultiplicaActionPerformed
@@ -578,6 +584,8 @@ public class Calculadora extends javax.swing.JFrame {
         // Converte o texto para double
         double valor = Double.parseDouble(texto);
         
+        DecimalFormat df = new DecimalFormat("#.###############");
+        
         // Soma o valor ao acumulado
         if (acumulado == 0){
             acumulado = valor;
@@ -585,16 +593,17 @@ public class Calculadora extends javax.swing.JFrame {
         }
         else{
             acumulado /= valor;
-            String valorString = String.valueOf(acumulado);
-            if (valorString.endsWith(".0")) {
+            String valorString = df.format(acumulado);
+            String valorString2 = valorString.replace(",", ".");
+            if (valorString2.endsWith(".0")) {
                 valorString = valorString.replace(".0", "");
                 txtValor.setText(valorString);
                 apagaValor = valorString;
             }
             else{
-                txtValor.setText(valorString);
-                apagaValor = valorString;
-            } 
+                txtValor.setText(valorString2);
+                apagaValor = valorString2;
+            }
         }
     }//GEN-LAST:event_btnDivisaoActionPerformed
 
@@ -605,21 +614,24 @@ public class Calculadora extends javax.swing.JFrame {
         
         double valor = Double.parseDouble(texto);
         
+        DecimalFormat df = new DecimalFormat("#.###############");
+        
         if (acumulado == 0){
             acumulado = valor;
             txtValor.setText("0");
         }
         else{
             acumulado -= valor;
-            String valorString = String.valueOf(acumulado);
-            if (valorString.endsWith(".0")) {
+            String valorString = df.format(acumulado);
+            String valorString2 = valorString.replace(",", ".");
+            if (valorString2.endsWith(".0")) {
                 valorString = valorString.replace(".0", "");
                 txtValor.setText(valorString);
                 apagaValor = valorString;
             }
             else{
-                txtValor.setText(valorString);
-                apagaValor = valorString;
+                txtValor.setText(valorString2);
+                apagaValor = valorString2;
             }
         }
     }//GEN-LAST:event_btnSubActionPerformed
@@ -627,12 +639,14 @@ public class Calculadora extends javax.swing.JFrame {
     private void btnSomaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSomaActionPerformed
         // Obtém o texto do campo txtValor
         String texto = txtValor.getText();
+        
+        operacao = 1;
 
         // Converte o texto para double
         double valor = Double.parseDouble(texto);
         
-        operacao = 1;
-
+        DecimalFormat df = new DecimalFormat("#.##############");
+        
         // Soma o valor ao acumulado
         if (acumulado == 0){
             acumulado = valor;
@@ -640,16 +654,17 @@ public class Calculadora extends javax.swing.JFrame {
         }
         else{
             acumulado += valor;
-            String valorString = String.valueOf(acumulado);
-            if (valorString.endsWith(".0")) {
+            String valorString = df.format(acumulado);
+            String valorString2 = valorString.replace(",", ".");
+            if (valorString2.endsWith(".0")) {
                 valorString = valorString.replace(".0", "");
                 txtValor.setText(valorString);
                 apagaValor = valorString;
             }
             else{
-                txtValor.setText(valorString);
-                apagaValor = valorString;
-            } 
+                txtValor.setText(valorString2);
+                apagaValor = valorString2;
+            }
         }
     }//GEN-LAST:event_btnSomaActionPerformed
 
@@ -657,23 +672,25 @@ public class Calculadora extends javax.swing.JFrame {
         // Obtém o texto do campo txtValor
         String texto = txtValor.getText();
 
+        operacao = 5;
+
         // Converte o texto para double
         double valor = Double.parseDouble(texto);
         
+        DecimalFormat df = new DecimalFormat("#.###############");
+        
         acumulado = valor * valor;
-        
-        operacao = 5;
-        
-        String valorString = String.valueOf(acumulado);
-        
-        if (valorString.endsWith(".0")) {
+            
+        String valorString = df.format(acumulado);
+        String valorString2 = valorString.replace(",", ".");
+        if (valorString2.endsWith(".0")) {
             valorString = valorString.replace(".0", "");
             txtValor.setText(valorString);
             apagaValor = valorString;
         }
         else{
-            txtValor.setText(valorString);
-            apagaValor = valorString;
+            txtValor.setText(valorString2);
+            apagaValor = valorString2;
         }
     }//GEN-LAST:event_btnPotenciaActionPerformed
 
@@ -684,11 +701,13 @@ public class Calculadora extends javax.swing.JFrame {
     private void btnRaizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRaizActionPerformed
          // Obtém o texto do campo txtValor
         String texto = txtValor.getText();
+        
+        operacao = 6;
 
         // Converte o texto para double
         double valor = Double.parseDouble(texto);
         
-        operacao = 6;
+        DecimalFormat df = new DecimalFormat("#.###############");
         
         // Verifica se o número é não negativo
         if (valor < 0) {
@@ -697,15 +716,16 @@ public class Calculadora extends javax.swing.JFrame {
         else {
             // Calcula a raiz quadrada usando o método Math.sqrt()
             double acumulado = Math.sqrt(valor);
-            String valorString = String.valueOf(acumulado);
-            if (valorString.endsWith(".0")) {
+            String valorString = df.format(acumulado);
+            String valorString2 = valorString.replace(",", ".");
+            if (valorString2.endsWith(".0")) {
                 valorString = valorString.replace(".0", "");
                 txtValor.setText(valorString);
                 apagaValor = valorString;
             }
             else{
-                txtValor.setText(valorString);
-                apagaValor = valorString;
+                txtValor.setText(valorString2);
+                apagaValor = valorString2;
             }
         }
     }//GEN-LAST:event_btnRaizActionPerformed
@@ -713,12 +733,14 @@ public class Calculadora extends javax.swing.JFrame {
     private void btnPorcentagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPorcentagemActionPerformed
          // Obtém o texto do campo txtValor
         String texto = txtValor.getText();
+        
+        operacao = 7;
 
         // Converte o texto para double
         double valor = Double.parseDouble(texto);
         
-        operacao = 7;
-        
+        DecimalFormat df = new DecimalFormat("#.###############");
+              
         // Soma o valor ao acumulado
         if (acumulado == 0){
             acumulado = valor;
@@ -727,15 +749,16 @@ public class Calculadora extends javax.swing.JFrame {
         else{
             acumulado1=valor;
             acumulado = (acumulado*acumulado1)/100;
-            String valorString = String.valueOf(acumulado);
-            if (valorString.endsWith(".0")) {
+            String valorString = df.format(acumulado);
+            String valorString2 = valorString.replace(",", ".");
+            if (valorString2.endsWith(".0")) {
                 valorString = valorString.replace(".0", "");
                 txtValor.setText(valorString);
                 apagaValor = valorString;
             }
             else{
-                txtValor.setText(valorString);
-                apagaValor = valorString;
+                txtValor.setText(valorString2);
+                apagaValor = valorString2;
             }
         }
     }//GEN-LAST:event_btnPorcentagemActionPerformed
@@ -776,8 +799,4 @@ public class Calculadora extends javax.swing.JFrame {
     private javax.swing.JTextField txtValor;
     // End of variables declaration//GEN-END:variables
 
-    public static boolean containsDecimalPoint(String text) {
-           Pattern pattern = Pattern.compile("\\.");
-           return pattern.matcher(text).find();
-    }
 }
