@@ -8,6 +8,7 @@ public class Calculadora extends javax.swing.JFrame {
     private double acumulado1;
     private int operacao;
     private String apagaValor = "";
+    DecimalFormat df = new DecimalFormat("#.############");
        
     
     public Calculadora() {
@@ -220,12 +221,18 @@ public class Calculadora extends javax.swing.JFrame {
                 txtValorActionPerformed(evt);
             }
         });
-        // Adiciona o KeyListener para permitir apenas números e um ponto decimal
+        // Adiciona o KeyListener para permitir apenas números e um ponto decimal, e restringe a 12 caracteres
         txtValor.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 char c = evt.getKeyChar();
                 String text = txtValor.getText();
+
+                // Verifica se o comprimento do texto já atingiu 12 caracteres
+                if (text.length() >= 12) {
+                    evt.consume(); // Ignora o caractere se o limite de 12 caracteres foi atingido
+                    return;
+                }
 
                 // Verifica se o caractere é um dígito ou um ponto decimal
                 if (Character.isDigit(c) || c == '.') {
@@ -312,35 +319,33 @@ public class Calculadora extends javax.swing.JFrame {
 
         // Converte o texto para double
         double valor = Double.parseDouble(texto);
-
+        
         // Processa a operação com base no valor de 'operacao'
         switch (operacao) {
-            case 1: // Adição
-                // Soma o valor ao acumulado
+            case 1: // Adição              
                 if (acumulado == 0){
                     acumulado = valor;
                     txtValor.setText("0");
                 }
                 else{
                     acumulado += valor;
-                    String valorString = String.valueOf(acumulado);
-                    if (valorString.endsWith(".0")) {
+                    String valorString = df.format(acumulado);
+                    String valorString2 = valorString.replace(",", ".");
+                    if (valorString2.endsWith(".0")) {
                         valorString = valorString.replace(".0", "");
                         txtValor.setText(valorString);
                         apagaValor = valorString;
                     }
                     else{
-                        txtValor.setText(valorString);
-                        apagaValor = valorString;
-                    } 
-                }   
+                        txtValor.setText(valorString2);
+                        apagaValor = valorString2;
+                    }
+                }
                 acumulado = 0;
                 acumulado1 = 0;
                 operacao = 0;
                 break;
-            case 2: // Subtração
-                DecimalFormat df = new DecimalFormat("#.###############");
-        
+            case 2: // Subtração       
                 if (acumulado == 0){
                     acumulado = valor;
                     txtValor.setText("0");
@@ -370,15 +375,16 @@ public class Calculadora extends javax.swing.JFrame {
                 }
                 else{
                     acumulado *= valor;
-                    String valorString = String.valueOf(acumulado);
-                    if (valorString.endsWith(".0")) {
+                    String valorString = df.format(acumulado);
+                    String valorString2 = valorString.replace(",", ".");
+                    if (valorString2.endsWith(".0")) {
                         valorString = valorString.replace(".0", "");
                         txtValor.setText(valorString);
                         apagaValor = valorString;
                     }
                     else{
-                        txtValor.setText(valorString);
-                        apagaValor = valorString;
+                        txtValor.setText(valorString2);
+                        apagaValor = valorString2;
                     }
                 }
                 acumulado = 0;
@@ -394,16 +400,17 @@ public class Calculadora extends javax.swing.JFrame {
                 }
                 else{
                     acumulado /= valor;
-                    String valorString = String.valueOf(acumulado);
-                    if (valorString.endsWith(".0")) {
+                    String valorString = df.format(acumulado);
+                    String valorString2 = valorString.replace(",", ".");
+                    if (valorString2.endsWith(".0")) {
                         valorString = valorString.replace(".0", "");
                         txtValor.setText(valorString);
                         apagaValor = valorString;
                     }
                     else{
-                        txtValor.setText(valorString);
-                        apagaValor = valorString;
-                    } 
+                        txtValor.setText(valorString2);
+                        apagaValor = valorString2;
+                    }
                 }
                 acumulado = 0;
                 acumulado1 = 0;
@@ -430,118 +437,130 @@ public class Calculadora extends javax.swing.JFrame {
                 else{
                     acumulado1=valor;
                     acumulado = (acumulado*acumulado1)/100;
-                    String valorString = String.valueOf(acumulado);
-                    if (valorString.endsWith(".0")) {
+                    String valorString = df.format(acumulado);
+                    String valorString2 = valorString.replace(",", ".");
+                    if (valorString2.endsWith(".0")) {
                         valorString = valorString.replace(".0", "");
                         txtValor.setText(valorString);
                         apagaValor = valorString;
                     }
                     else{
-                        txtValor.setText(valorString);
-                        apagaValor = valorString;
+                        txtValor.setText(valorString2);
+                        apagaValor = valorString2;
                     }
                 }   
         }
     }//GEN-LAST:event_btnIgualActionPerformed
 
     private void btnZeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZeroActionPerformed
+        /// Verifica se o comprimento do texto é menor que 12
+        if (txtValor.getText().length() < 12) {
         // Evita adicionar múltiplos zeros desnecessários
-        if (!txtValor.getText().equals("0")|| apagaValor != ""){
-            txtValor.setText(txtValor.getText() + "0");
-            apagaValor = "";
+            if (!txtValor.getText().equals("0") || !apagaValor.equals("")) {
+                txtValor.setText(txtValor.getText() + "0");
+                apagaValor = "";
+            }
         }
     }//GEN-LAST:event_btnZeroActionPerformed
 
     private void btnNoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNoveActionPerformed
-        // Verifica se o texto é "0" e limpa se necessário
-        if (txtValor.getText().equals("0")|| apagaValor != ""){
-            txtValor.setText("9");
-            apagaValor = "";
-        }
-        else {
-            txtValor.setText(txtValor.getText() + "9");
+        /// Verifica se o comprimento do texto é menor que 12
+        if (txtValor.getText().length() < 12) {
+            // Verifica se o texto é "0" e limpa se necessário
+            if (txtValor.getText().equals("0") || !apagaValor.equals("")) {
+                txtValor.setText("9");
+                apagaValor = "";
+            } else {
+                txtValor.setText(txtValor.getText() + "9");
+            }
         }
     }//GEN-LAST:event_btnNoveActionPerformed
 
     private void btnOitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOitoActionPerformed
-        // Verifica se o texto é "0" e limpa se necessário
-        if (txtValor.getText().equals("0")|| apagaValor != ""){
-            txtValor.setText("8");
-            apagaValor = "";
-        }
-        else {
-            txtValor.setText(txtValor.getText() + "8");
+        if (txtValor.getText().length() < 12) {
+            if (txtValor.getText().equals("0") || !apagaValor.equals("")) {
+                txtValor.setText("8");
+                apagaValor = "";
+            } else {
+                txtValor.setText(txtValor.getText() + "8");
+            }
         }
     }//GEN-LAST:event_btnOitoActionPerformed
 
     private void btnSeteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeteActionPerformed
-        // Verifica se o texto é "0" e limpa se necessário
-        if (txtValor.getText().equals("0")|| apagaValor != ""){
-            txtValor.setText("7");
-            apagaValor = "";
-        } else {
-            txtValor.setText(txtValor.getText() + "7");
+        if (txtValor.getText().length() < 12) {
+            if (txtValor.getText().equals("0") || !apagaValor.equals("")) {
+                txtValor.setText("7");
+                apagaValor = "";
+            } else {
+                txtValor.setText(txtValor.getText() + "7");
+            }
         }
     }//GEN-LAST:event_btnSeteActionPerformed
 
     private void btnQuatroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuatroActionPerformed
-        // Verifica se o texto é "0" e limpa se necessário
-        if (txtValor.getText().equals("0")|| apagaValor != "") {
-            txtValor.setText("4");
-            apagaValor = "";
-        } else {
-            txtValor.setText(txtValor.getText() + "4");
+        if (txtValor.getText().length() < 12) {
+            if (txtValor.getText().equals("0") || !apagaValor.equals("")) {
+                txtValor.setText("4");
+                apagaValor = "";
+            } else {
+                txtValor.setText(txtValor.getText() + "4");
+            }
         }
     }//GEN-LAST:event_btnQuatroActionPerformed
 
     private void btnCincoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCincoActionPerformed
-        // Verifica se o texto é "0" e limpa se necessário
-        if (txtValor.getText().equals("0")|| apagaValor != ""){
-            txtValor.setText("5");
-            apagaValor = "";
-        } else {
-            txtValor.setText(txtValor.getText() + "5");
+        if (txtValor.getText().length() < 12) {
+            if (txtValor.getText().equals("0") || !apagaValor.equals("")) {
+                txtValor.setText("5");
+                apagaValor = "";
+            } else {
+                txtValor.setText(txtValor.getText() + "5");
+            }
         }
     }//GEN-LAST:event_btnCincoActionPerformed
 
     private void bntSeisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntSeisActionPerformed
-        // Verifica se o texto é "0" e limpa se necessário
-        if (txtValor.getText().equals("0")|| apagaValor != ""){
-            txtValor.setText("6");
-            apagaValor = "";
-        } else {
-            txtValor.setText(txtValor.getText() + "6");
+        if (txtValor.getText().length() < 12) {
+            if (txtValor.getText().equals("0") || !apagaValor.equals("")) {
+                txtValor.setText("6");
+                apagaValor = "";
+            } else {
+                txtValor.setText(txtValor.getText() + "6");
+            }
         }
     }//GEN-LAST:event_bntSeisActionPerformed
 
     private void btnTresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTresActionPerformed
-        // Verifica se o texto é "0" e limpa se necessário
-        if (txtValor.getText().equals("0")|| apagaValor != ""){
-            txtValor.setText("3");
-            apagaValor = "";
-        }
-        else {
-            txtValor.setText(txtValor.getText() + "3");
+        if (txtValor.getText().length() < 12) {
+            if (txtValor.getText().equals("0") || !apagaValor.equals("")) {
+                txtValor.setText("3");
+                apagaValor = "";
+            } else {
+                txtValor.setText(txtValor.getText() + "3");
+            }
         }
     }//GEN-LAST:event_btnTresActionPerformed
 
     private void btnDoisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoisActionPerformed
-        // Verifica se o texto é "0" e limpa se necessário
-        if (txtValor.getText().equals("0")|| apagaValor != "") {
-            txtValor.setText("2");
-            apagaValor = "";
-        } else {
-            txtValor.setText(txtValor.getText() + "2");
+        if (txtValor.getText().length() < 12) {
+            if (txtValor.getText().equals("0") || !apagaValor.equals("")) {
+                txtValor.setText("2");
+                apagaValor = "";
+            } else {
+                txtValor.setText(txtValor.getText() + "2");
+            }
         }
     }//GEN-LAST:event_btnDoisActionPerformed
 
     private void btnUmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUmActionPerformed
-        // Verifica se o texto é "0" e limpa se necessário
-        if (txtValor.getText().equals("0") || apagaValor != "") {
-            txtValor.setText("1");
-            apagaValor = "";
-        } else {
-            txtValor.setText(txtValor.getText() + "1");
+        if (txtValor.getText().length() < 12) {
+            if (txtValor.getText().equals("0") || !apagaValor.equals("")) {
+                txtValor.setText("1");
+                apagaValor = "";
+            } else {
+                txtValor.setText(txtValor.getText() + "1");
+            }
         }
     }//GEN-LAST:event_btnUmActionPerformed
 
@@ -553,8 +572,6 @@ public class Calculadora extends javax.swing.JFrame {
         // Converte o texto para double
         double valor = Double.parseDouble(texto);
         
-        DecimalFormat df = new DecimalFormat("#.###############");
-      
         // Soma o valor ao acumulado
         if (acumulado == 0){
             acumulado = valor;
@@ -584,8 +601,6 @@ public class Calculadora extends javax.swing.JFrame {
         // Converte o texto para double
         double valor = Double.parseDouble(texto);
         
-        DecimalFormat df = new DecimalFormat("#.###############");
-        
         // Soma o valor ao acumulado
         if (acumulado == 0){
             acumulado = valor;
@@ -613,8 +628,6 @@ public class Calculadora extends javax.swing.JFrame {
         operacao = 2;
         
         double valor = Double.parseDouble(texto);
-        
-        DecimalFormat df = new DecimalFormat("#.###############");
         
         if (acumulado == 0){
             acumulado = valor;
@@ -644,8 +657,6 @@ public class Calculadora extends javax.swing.JFrame {
 
         // Converte o texto para double
         double valor = Double.parseDouble(texto);
-        
-        DecimalFormat df = new DecimalFormat("#.##############");
         
         // Soma o valor ao acumulado
         if (acumulado == 0){
@@ -677,8 +688,6 @@ public class Calculadora extends javax.swing.JFrame {
         // Converte o texto para double
         double valor = Double.parseDouble(texto);
         
-        DecimalFormat df = new DecimalFormat("#.###############");
-        
         acumulado = valor * valor;
             
         String valorString = df.format(acumulado);
@@ -706,9 +715,7 @@ public class Calculadora extends javax.swing.JFrame {
 
         // Converte o texto para double
         double valor = Double.parseDouble(texto);
-        
-        DecimalFormat df = new DecimalFormat("#.###############");
-        
+         
         // Verifica se o número é não negativo
         if (valor < 0) {
             txtValor.setText("0");
@@ -738,9 +745,7 @@ public class Calculadora extends javax.swing.JFrame {
 
         // Converte o texto para double
         double valor = Double.parseDouble(texto);
-        
-        DecimalFormat df = new DecimalFormat("#.###############");
-              
+                      
         // Soma o valor ao acumulado
         if (acumulado == 0){
             acumulado = valor;
